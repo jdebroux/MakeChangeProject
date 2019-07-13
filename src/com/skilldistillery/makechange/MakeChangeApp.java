@@ -27,51 +27,70 @@ public class MakeChangeApp {
 
 	private static void whatChangeWillBe(int change) {
 		if (change >= 1000) {
-			change -= 1000;
+			change %= 1000;
 			System.out.print("1 ten, ");
-//			System.out.println(change);
+//			System.out.println("****" + change);
 		}
+
 		if (change >= 500) {
-			change -= 500;
+			change %= 500;
 			System.out.print("1 five, ");
-//			System.out.println(change);
+//			System.out.println("****" + change);
 		}
+
 		if (change >= 200) {
-			int dollars = (change / 100);
-			System.out.print(dollars + " dollars, ");
-			if (change >= 400) {
-				change -= 400;
-			} else if (change >= 300) {
-				change -= 300;
-			} else if (change >= 200) {
-				change -= 200;
-			}else if (change >= 100) {
-				change -= 100;
-			}
-		}else if (change >= 100) {
-			int dollar = (change / 100);
-			System.out.println(dollar + " dollar, ");
-		}//dollars if
+			int dollars = change / 100;
+			System.out.print(dollars + " singles, ");
+			change %= 100;
+//			System.out.println("****" + change);
+		} else if (change >= 100) {
+			int dollar = change / 100;
+			System.out.print(dollar + " dollar, ");
+			change %= 100;
+//			System.out.println("****" + change);
+		} // dollars if
+
 		if (change >= 50) {
 			int quarters = (change / 25);
 			System.out.print(quarters + " quarters, ");
-			if (change >= 75) {
-				change -= 75;
-			}else if (change >= 50) {
-				change -= 50;
-				change -= 25;
-			}
-		}else if (change >= 25) {
+			change %= 25;
+//			System.out.println("****" + change);
+		} else if (change >= 25) {
 			int quarter = (change / 25);
-			System.out.println(quarter + " quater, ");
-		}//quarters if
-		if (change >= 20) {
-			int dimes = (change % 2);
-			System.out.print(dimes + " dimes, ");
-			
-		}
+			System.out.print(quarter + " quarter, ");
+			change %= 25;
+//			System.out.println("****" + change);
+		} // quarters if
 
-		System.out.print("\t" + change + "\t");
+		if (change >= 20) {
+			int dimes = (change / 10);
+			System.out.print(dimes + " dimes, ");
+			change %= 10;
+//			System.out.println("****" + change);
+		} else if (change >= 10) {
+			int dime = (change / 10);
+			System.out.print(dime + " dime, ");
+			change %= 10;
+//			System.out.println("****" + change);
+		} // dimes if
+
+		if (change >= 5) {
+			System.out.print("1 nickel, ");
+			change %= 5;
+//			System.out.println("****" + change);
+		} // nickel if
+		
+		if (change > 1) {
+			int pennies = (change / 1);
+			System.out.print(pennies + " pennies.");
+			change %= 1;
+//			System.out.println("****" + change);
+		} else if (change == 1) {
+			System.out.print(change + " penny.");
+			change %= 1;
+//			System.out.println("****" + change);
+		}// pennies if
+		
 	}// end of whatChangeWillBe
 
 	private static int changeEquation(double cost, double payment) {
