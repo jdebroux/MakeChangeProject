@@ -61,7 +61,7 @@ public class MakeChangeApp {
 //			System.out.println("****" + hundredsChange);
 		}
 		return hundredsChange;
-	}// end hundereds
+	}// end hundreds
 
 	private static int fifties(int fiftiesChange) {
 		if (fiftiesChange >= 5000) {
