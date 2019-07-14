@@ -8,18 +8,26 @@ public class MakeChangeApp {
 		Scanner kb = new Scanner(System.in);
 		double cost = askUser1(kb);
 		double payment = askUser2(kb);
-		boolean hasEnough$ = tooLittleOrExactMoney(cost, payment);
+		boolean hasEnough$ = false;
+		while (payment < cost) {
+			tooLittleOrExactMoney(cost, payment);
+			cost = cost - payment;
+			payment = askUser2(kb);
+		}
+		hasEnough$ = tooLittleOrExactMoney(cost, payment);
 		if (hasEnough$ == false) {
 			System.exit(0);
 		} else {
 			int change = changeEquation(cost, payment);
-			exactChange(change);
+			changeType(change);
 			changeInBills(change);
 		} // end if statement
 		kb.close();
 	}// end of main
 
 	private static void changeInBills(int change) {
+		change = hundreds(change);
+		change = fifties(change);
 		change = twenties(change);
 		change = ten(change);
 		change = five(change);
@@ -28,63 +36,92 @@ public class MakeChangeApp {
 		change = dimes(change);
 		change = nickel(change);
 		change = pennies(change);
-	}
+	}// end changeInBills
 
-	private static void exactChange(int change) {
+	private static void changeType(int change) {
 		double exactChange = ((double) change) / 100;
-		System.out.println("Your change is: $" + exactChange);
-		System.out.print("Here is ");
+
+		System.out.print("Customer change is: $" + exactChange + ".");
+		System.out.print("\n\nPay the customer: \n\n* ");
 	}// end exactChange
+
+	private static int hundreds(int hundredsChange) {
+		int hundreds = 0;
+		if (hundredsChange >= 20000) {
+			hundreds = hundredsChange / 10000;
+			System.out.print(hundreds + " hundred dollar bills");
+			hundredsChange %= 10000;
+			amIDone(hundredsChange);
+//		System.out.println("****" + hundredsChange);
+		} else if (hundredsChange >= 10000) {
+			hundreds = hundredsChange / 10000;
+			System.out.print(hundreds + " hundred dollar bill");
+			hundredsChange %= 10000;
+			amIDone(hundredsChange);
+//			System.out.println("****" + hundredsChange);
+		}
+		return hundredsChange;
+	}// end hundereds
+
+	private static int fifties(int fiftiesChange) {
+		if (fiftiesChange >= 5000) {
+			fiftiesChange %= 5000;
+			System.out.print("1 fifty dollar bill");
+			amIDone(fiftiesChange);
+		}
+//			System.out.println("****" + fiftiesChange);
+		return fiftiesChange;
+	}// end fifties
 
 	private static int twenties(int twentiesChange) {
 		int twenties = 0;
 		if (twentiesChange >= 4000) {
 			twenties = twentiesChange / 2000;
-			System.out.print(twenties + " twenties");
+			System.out.print(twenties + " twenty dollar bills");
 			twentiesChange %= 2000;
 			amIDone(twentiesChange);
 //		System.out.println("****" + twentiesChange);
 		} else if (twentiesChange >= 2000) {
 			twenties = twentiesChange / 2000;
-			System.out.print(twenties + " twenty");
+			System.out.print(twenties + " twenty dollar bill");
 			twentiesChange %= 2000;
 			amIDone(twentiesChange);
 //			System.out.println("****" + twentiesChange);
 		}
 		return twentiesChange;
-	}
+	}// end twenties
 
 	private static int ten(int tenChange) {
 		if (tenChange >= 1000) {
 			tenChange %= 1000;
-			System.out.print("1 ten");
+			System.out.print("1 ten dollar bill");
 			amIDone(tenChange);
 		}
 //			System.out.println("****" + tenChange);
 		return tenChange;
-	}// end tens
+	}// end ten
 
 	private static int five(int fiveChange) {
 		if (fiveChange >= 500) {
 			fiveChange %= 500;
-			System.out.print("1 five");
+			System.out.print("1 five dollar bill");
 			amIDone(fiveChange);
 		}
 //			System.out.println("****" + fiveChange);
 		return fiveChange;
-	}// end fives
+	}// end five
 
 	private static int singles(int dollarsChange) {
 		int dollars = 0;
 		if (dollarsChange >= 200) {
 			dollars = dollarsChange / 100;
-			System.out.print(dollars + " singles");
+			System.out.print(dollars + " single dollar bills");
 			dollarsChange %= 100;
 			amIDone(dollarsChange);
 //			System.out.println("****" + dollarsChange);
 		} else if (dollarsChange >= 100) {
 			dollars = dollarsChange / 100;
-			System.out.print(dollars + " dollar");
+			System.out.print(dollars + " dollar bill");
 			dollarsChange %= 100;
 			amIDone(dollarsChange);
 //			System.out.println("****" + dollarsChange);
@@ -139,12 +176,14 @@ public class MakeChangeApp {
 	private static int pennies(int penniesChange) {
 		if (penniesChange > 1) {
 			int pennies = (penniesChange / 1);
-			System.out.print(pennies + " pennies.");
+			System.out.print(pennies + " pennies");
 			penniesChange %= 1;
+			amIDone(penniesChange);
 //			System.out.println("****" + penniesChange);
 		} else if (penniesChange == 1) {
-			System.out.print(penniesChange + " penny.");
+			System.out.print(penniesChange + " penny");
 			penniesChange %= 1;
+			amIDone(penniesChange);
 //			System.out.println("****" + penniesChange);
 		}
 		return penniesChange;
@@ -152,25 +191,32 @@ public class MakeChangeApp {
 
 	private static void amIDone(int remainder) {
 		if (remainder == 0) {
-			System.out.println(".  Please come again.");
+			System.out.println(". *\n");
+			System.out.println("\t\t************************************");
+			System.out.println("\t\t* Thank them for shopping with us! *");
+			System.out.println("\t\t************************************");
 		} else
 			System.out.print(", ");
 	}// end amIDone
 
 	private static int changeEquation(double cost, double payment) {
-		cost *= 100;
-		payment *= 100;
 		int change = (int) (payment - cost);
 		return change;
 	}// end changeEquation
 
 	private static boolean tooLittleOrExactMoney(double cost, double payment) {
 		if (payment < cost) {
-			System.out.println("You don't have enough money for this purchase.");
-			return (false);
+			System.out.println("Customer did not provide enough money for this purchase.");
+			double balance = cost - payment;
+			balance /= 100;
+			System.out.println("\nRemaining balance owed: " + balance + "\n");
+			return (true);
 		} // end if statement
 		else if (payment == cost) {
-			System.out.println("You paid with exact change.  Have a terrific day!");
+			System.out.println("\nCustomer paid with exact change.\n");
+			System.out.println("\t\t************************************");
+			System.out.println("\t\t* Thank them for shopping with us! *");
+			System.out.println("\t\t************************************");
 			return (false);
 		} // end else if
 		else {
@@ -178,15 +224,17 @@ public class MakeChangeApp {
 		} // end else
 	}// end tooLittleMoney
 
-	private static double askUser1(Scanner user1) {
-		System.out.print("How much is the item being purchased? ");
+	private static int askUser1(Scanner user1) {
+		System.out.print("Purchase Total: ");
 		double cost = user1.nextDouble();
-		return cost;
+		int costAsI = (int) (cost * 100);
+		return costAsI;
 	}// end of askUser1
 
-	public static double askUser2(Scanner user2) {
-		System.out.print("How much are you paying with? ");
+	public static int askUser2(Scanner user2) {
+		System.out.print("Payment Amount: ");
 		double payment = user2.nextDouble();
-		return payment;
+		int paymentAsI = (int) (payment * 100);
+		return paymentAsI;
 	}// end of askUser2
 }// end of class
