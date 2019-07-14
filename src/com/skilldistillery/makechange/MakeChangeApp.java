@@ -41,7 +41,7 @@ public class MakeChangeApp {
 	private static void changeType(int change) {
 		double exactChange = ((double) change) / 100;
 
-		System.out.print("Customer change is: $" + exactChange + ".");
+		System.out.print("Customer change is: $" + exactChange);
 		System.out.print("\n\nPay the customer: \n\n* ");
 	}// end exactChange
 
